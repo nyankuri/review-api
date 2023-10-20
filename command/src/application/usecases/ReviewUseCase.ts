@@ -1,3 +1,6 @@
+import { Review } from "../../domain/models/entities/review/Review";
+import { Crypto } from "../../domain/models/values/Crypto";
+import { UserAction } from "../../domain/models/values/UserAction";
 import { ReviewRepositoryInterface } from "../../domain/repositories/interfaces/ReviewRepositoryInterface";
 import { ReviewUseCaseInterface } from "./interfaces/ReviewUseCaseInterface";
 
@@ -14,7 +17,14 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
   constructor(reviewRepository: ReviewRepositoryInterface) {
     this.reviewRepository = reviewRepository;
   }
-  async registerReview(review: RequestReview): Promise<void> {
-    this.reviewRepository.set("1", review.text);
+  async registerReview(requestedReview: RequestReview): Promise<void> {
+    const reviewId = Crypto.of().value;
+    const review = Review.of(
+      reviewId,
+      requestedReview.product_id,
+      requestedReview.recommend,
+      requestedReview.text,
+      UserAction.CREATE);
+    this.reviewRepository.set(reviewId, review.jsonOf());
   }
 }
