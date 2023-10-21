@@ -10,6 +10,8 @@ export interface RequestReview {
   text: string
 }
 
+const FIRST_VERSION = "1";
+
 export class ReviewUsecase implements ReviewUseCaseInterface {
 
   private reviewRepository: ReviewRepositoryInterface;
@@ -24,7 +26,9 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
       requestedReview.product_id,
       requestedReview.recommend,
       requestedReview.text,
-      UserAction.CREATE);
+      UserAction.CREATE,
+      FIRST_VERSION);
     this.reviewRepository.set(reviewId, review.jsonOf());
+    this.reviewRepository.publish(review.jsonOf());
   }
 }

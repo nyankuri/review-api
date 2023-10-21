@@ -4,6 +4,7 @@ import { Recommend } from "../../values/review/Recommend";
 import { UserAction } from "../../values/UserAction";
 import { Text } from "../../values/review/Text";
 import { Product } from "./Product";
+import { Version } from "../../values/Version";
 
 export class Review implements Entity<Review, Id> {
 
@@ -12,17 +13,19 @@ export class Review implements Entity<Review, Id> {
   readonly recommend: Recommend<Review>;
   readonly text: Text<Review>;
   readonly userAction: UserAction;
+  readonly version: Version<Review>;
 
-  private constructor(id: string, productId: number, recommend: number, text: string, userAction: UserAction) {
+  private constructor(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: string) {
     this.id = Id.of(id);
     this.product = Product.of(productId);
     this.recommend = Recommend.of(recommend);
     this.text = Text.of(text);
     this.userAction = userAction;
+    this.version = Version.of(version);
   }
 
-  static of(id: string, productId: number, recommend: number, text: string, userAction: UserAction): Review {
-    return new Review(id, productId, recommend, text, userAction);
+  static of(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: string): Review {
+    return new Review(id, productId, recommend, text, userAction, version);
   }
 
   jsonOf(): string {
@@ -31,7 +34,8 @@ export class Review implements Entity<Review, Id> {
       product_id: this.product.id.value,
       recommend: this.recommend.value,
       text: this.text.value,
-      user_action: this.userAction
+      user_action: this.userAction,
+      version: this.version.value
     };
     return JSON.stringify(review);
   }

@@ -12,4 +12,8 @@ export class ReviewRepository implements ReviewRepositoryInterface {
   set(key: string, value: string): void {
     this.redisClient.set(key, value);
   }
+
+  publish(message: string): void {
+    this.redisClient.publish(message);
+  }
 }
