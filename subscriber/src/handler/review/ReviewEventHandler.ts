@@ -13,7 +13,10 @@ export interface PublishedReviewEvent {
 }
 
 export async function reviewEventHandler() {
-  const redis = new Redis();
+  const redis = new Redis({
+    host: process.env.NODE_ENV === 'docker' ? 'redis' : 'localhost',
+    port: 6379,
+  });
   await redis.subscribe(CHANNEL_NAME);
 
   redis.on('message', (channel, message) => {

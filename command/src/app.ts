@@ -8,7 +8,10 @@ import Redis from 'ioredis';
 
 const app: express.Express = express();
 
-const redis: Redis = new Redis();
+const redis: Redis = new Redis({
+  host: process.env.NODE_ENV === 'docker' ? 'redis' : 'localhost',
+  port: 6379,
+});
 const redisClient = new RedisClient(redis);
 const reviewRepository = new ReviewRepository(redisClient);
 const reviewUseCase = new ReviewUsecase(reviewRepository);

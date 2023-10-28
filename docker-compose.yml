@@ -1,5 +1,37 @@
 version: '3.9'
 services:
+  command_app:
+    build:
+      context: .
+      dockerfile: ./command/docker/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=docker
+    depends_on:
+      - redis
+  query_app:
+    build:
+      context: .
+      dockerfile: ./query/docker/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=docker
+    depends_on:
+      - mysql
+  subscriber_app:
+    build:
+      context: .
+      dockerfile: ./subscriber/docker/Dockerfile
+    ports:
+      - "6000:6000"
+    environment:
+      - NODE_ENV=docker
+    depends_on:
+      - redis
+      - mysql
+
   redis:
     image: "redis:latest"
     ports:

@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise';
 import { PublishedReviewEvent } from '../../handler/review/ReviewEventHandler';
 
 const dbConfig = {
-  host: 'localhost',
+  host: process.env.NODE_ENV === 'docker' ? 'mysql' : 'localhost',
   user: 'docker',
   password: 'docker',
   database: 'review_query'
