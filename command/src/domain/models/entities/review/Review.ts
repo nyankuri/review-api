@@ -40,6 +40,10 @@ export class Review implements Entity<Review, Id> {
     return JSON.stringify(review);
   }
 
+  idWithVersion(): string {
+    return this.id.value + ":" + this.version.value;
+  }
+
   equalTo(target: Review): boolean {
     return this.id.value === target.id.value;
   }

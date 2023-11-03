@@ -20,15 +20,15 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
     this.reviewRepository = reviewRepository;
   }
   async registerReview(requestedReview: RequestReview): Promise<void> {
-    const reviewId = Crypto.of().value;
+    const reviewId = Crypto.of();
     const review = Review.of(
-      reviewId,
+      reviewId.value,
       requestedReview.product_id,
       requestedReview.recommend,
       requestedReview.text,
       UserAction.CREATE,
       FIRST_VERSION);
-    this.reviewRepository.set(reviewId, review.jsonOf());
+    this.reviewRepository.set(review.idWithVersion(), review.jsonOf());
     this.reviewRepository.publish(review.jsonOf());
   }
 }

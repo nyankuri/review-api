@@ -11,10 +11,10 @@ export class ReviewController {
   }
 
   async register(req: express.Request): Promise<void> {
-    this.reviewUseCase.registerReview(await this.requestReviewOf(req))
+    this.reviewUseCase.registerReview(this.requestReviewOf(req))
   }
 
-  private async requestReviewOf(req: express.Request): Promise<RequestReview> {
+  private requestReviewOf(req: express.Request): RequestReview {
     const requestTask: RequestReview = req.body;
     return requestTask;
   }
