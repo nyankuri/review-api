@@ -9,6 +9,11 @@ export class Version<D extends DomainObject<D>> implements Value<Version<D>> {
     this.value = value;
   }
 
+  versionUp<O extends DomainObject<O>>(): Version<O> {
+    const newVersion = parseInt(this.value) + 1;
+    return new Version(newVersion.toString());
+  }
+
   static of<O extends DomainObject<O>>(version: string): Version<O> {
     return new Version(version);
   }

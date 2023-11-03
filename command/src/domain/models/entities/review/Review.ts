@@ -15,16 +15,16 @@ export class Review implements Entity<Review, Id> {
   readonly userAction: UserAction;
   readonly version: Version<Review>;
 
-  private constructor(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: string) {
+  private constructor(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: Version<Review>) {
     this.id = Id.of(id);
     this.product = Product.of(productId);
     this.recommend = Recommend.of(recommend);
     this.text = Text.of(text);
     this.userAction = userAction;
-    this.version = Version.of(version);
+    this.version = version;
   }
 
-  static of(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: string): Review {
+  static of(id: string, productId: number, recommend: number, text: string, userAction: UserAction, version: Version<Review>): Review {
     return new Review(id, productId, recommend, text, userAction, version);
   }
 

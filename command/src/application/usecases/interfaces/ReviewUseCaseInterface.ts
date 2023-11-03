@@ -1,5 +1,6 @@
-import { RequestReview } from "../ReviewUseCase";
+import { RequestReview, RequestUpdateReview } from "../ReviewUseCase";
 
 export interface ReviewUseCaseInterface {
-  registerReview(review: RequestReview): Promise<void>;
+  registerReview(requestedReview: RequestReview): Promise<void>;
+  updateReview(requestedReview: RequestUpdateReview): Promise<void>;
 }
