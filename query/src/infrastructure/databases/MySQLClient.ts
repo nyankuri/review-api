@@ -2,8 +2,7 @@ import mysql, { RowDataPacket } from 'mysql2/promise';
 import { ProductModel, ReviewModel, ReviewResponseModel } from '../controllers/ReviewController';
 
 const dbConfig = {
-  host: process.env.NODE_ENV === 'local' ? 'localhost' : 'mysql',
-  // host: 'mysql',
+  host: process.env.NODE_ENV === 'docker' ? 'mysql' : 'localhost',
   user: 'docker',
   password: 'docker',
   database: 'review_query'
