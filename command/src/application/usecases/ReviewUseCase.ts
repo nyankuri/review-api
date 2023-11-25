@@ -5,18 +5,23 @@ import { Version } from "../../domain/models/values/Version";
 import { ReviewRepositoryInterface } from "../../domain/repositories/interfaces/ReviewRepositoryInterface";
 import { ReviewUseCaseInterface } from "./interfaces/ReviewUseCaseInterface";
 
-export interface RequestReview {
+export type RequestReview = {
   product_id: number,
   recommend: number,
   text: string
 }
 
-export interface RequestUpdateReview {
+export type RequestUpdateReview = {
   id: string,
   version: string,
   product_id: number,
   recommend: number,
   text: string
+}
+
+export type ResponseReview = {
+  id: string,
+  version: string
 }
 
 const FIRST_VERSION = "1";
@@ -28,7 +33,7 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
   constructor(reviewRepository: ReviewRepositoryInterface) {
     this.reviewRepository = reviewRepository;
   }
-  async registerReview(requestedReview: RequestReview): Promise<void> {
+  async registerReview(requestedReview: RequestReview): Promise<ResponseReview> {
     const reviewId = Crypto.of();
     const review = Review.of(
       reviewId.value,
@@ -39,9 +44,14 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
       Version.of(FIRST_VERSION));
     this.reviewRepository.set(review.idWithVersion(), review.jsonOf());
     this.reviewRepository.publish(review.jsonOf());
+
+    return {
+      id: review.id.value,
+      version: review.version.value
+    }
   }
 
-  async updateReview(requestedReview: RequestUpdateReview): Promise<void> {
+  async updateReview(requestedReview: RequestUpdateReview): Promise<ResponseReview> {
     const review = Review.of(
       requestedReview.id,
       requestedReview.product_id,
@@ -51,5 +61,10 @@ export class ReviewUsecase implements ReviewUseCaseInterface {
       Version.of(requestedReview.version).versionUp());
     this.reviewRepository.set(review.idWithVersion(), review.jsonOf());
     this.reviewRepository.publish(review.jsonOf());
+
+    return {
+      id: review.id.value,
+      version: review.version.value
+    }
   }
 }

@@ -1,25 +1,25 @@
 import { ReviewRepository } from "../repositories/ReviewRepository"
 
-export interface ReviewModel {
+export type ReviewModel = {
   id: string,
   recommend: string,
   text: string,
   version: string
 }
 
-export interface ProductModel {
+export type ProductModel = {
   product_id: string
 }
 
-export interface ReviewResponseModel {
+export type ReviewResponseModel = {
   review: ReviewModel
   product: ProductModel
 
 }
 
 export class ReviewController {
-  async findAll(): Promise<ReviewResponseModel[]> {
+  async findBy(reviewId: string): Promise<ReviewResponseModel | undefined> {
     const reviewRepository = new ReviewRepository();
-    return reviewRepository.findAll();
+    return reviewRepository.findBy(reviewId);
   }
 }

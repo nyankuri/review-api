@@ -1,5 +1,5 @@
 import express from "express";
-import { RequestReview, RequestUpdateReview } from "../../application/usecases/ReviewUseCase";
+import { RequestReview, RequestUpdateReview, ResponseReview } from "../../application/usecases/ReviewUseCase";
 import { ReviewUseCaseInterface } from "../../application/usecases/interfaces/ReviewUseCaseInterface";
 
 export class ReviewController {
@@ -10,12 +10,12 @@ export class ReviewController {
     this.reviewUseCase = reviewUseCase;
   }
 
-  async register(req: express.Request): Promise<void> {
-    this.reviewUseCase.registerReview(this.requestReviewOf(req));
+  async register(req: express.Request): Promise<ResponseReview> {
+    return this.reviewUseCase.registerReview(this.requestReviewOf(req));
   }
 
-  async update(req: express.Request): Promise<void> {
-    this.reviewUseCase.updateReview(this.requestUpdateReviewOf(req));
+  async update(req: express.Request): Promise<ResponseReview> {
+    return this.reviewUseCase.updateReview(this.requestUpdateReviewOf(req));
   }
 
   private requestReviewOf(req: express.Request): RequestReview {

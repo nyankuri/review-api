@@ -4,7 +4,7 @@ import { insertProduct, insertReview } from '../../infrastructure/repositories/R
 
 const CHANNEL_NAME = 'review-event';
 
-export interface PublishedReviewEvent {
+export type PublishedReviewEvent = {
   id: string,
   product_id: string,
   recommend: string,

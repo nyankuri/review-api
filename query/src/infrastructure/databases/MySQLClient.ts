@@ -11,24 +11,27 @@ const dbConfig = {
 const pool = mysql.createPool(dbConfig)
 
 export class MySQLClient {
-  async findAllReviews(): Promise<ReviewResponseModel[]> {
+  async findLatestReviewBy(reviewId: string): Promise<ReviewResponseModel | undefined> {
     const connection = await pool.getConnection()
-    const [rows] = await connection.query<RowDataPacket[]>('select r.id, r.product_id, r.recommend, r.text, r.version from reviews r inner join products p on p.review_id = r.id')
+    const [rows] = await connection.query<RowDataPacket[]>(`select r.id, r.uuid, r.product_id, r.recommend, r.text, r.version from reviews r inner join products p on p.review_id = r.uuid where r.uuid = '${reviewId}' order by r.version desc limit 1`);
     connection.release();
-    return rows.map((row: RowDataPacket) => {
-      const reviewModel: ReviewModel = {
-        id: row.id,
-        recommend: row.recommend,
-        text: row.text,
-        version: row.version
-      }
-      const productModel: ProductModel = {
-        product_id: row.product_id
-      }
-      return {
-        review: reviewModel,
-        product: productModel
-      }
-    });
+
+    return rows.length > 0 ? this.reviewResponseModelOf(rows[0]) : undefined;
+  }
+
+  private async reviewResponseModelOf(latestReview: mysql.RowDataPacket): Promise<ReviewResponseModel> {
+    const reviewModel: ReviewModel = {
+      id: latestReview.uuid,
+      recommend: latestReview.recommend,
+      text: latestReview.text,
+      version: latestReview.version
+    };
+    const productModel: ProductModel = {
+      product_id: latestReview.product_id
+    };
+    return {
+      review: reviewModel,
+      product: productModel
+    };
   }
 }

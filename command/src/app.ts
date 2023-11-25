@@ -26,11 +26,13 @@ app.listen(3000, () => {
 });
 
 app.post('/review', (req: express.Request, res: express.Response) => {
-  reviewController.register(req);
-  res.status(202).json({ message: 'accepted'});
+  reviewController
+    .register(req)
+    .then(responseReview => res.status(202).json({ review_id: responseReview.id, version: responseReview.version }))
 });
 
 app.put('/review', (req: express.Request, res: express.Response) => {
-  reviewController.update(req);
-  res.status(202).json({ message: 'accepted'});
+  reviewController
+    .update(req)
+    .then(responseReview => res.status(202).json({ review_id: responseReview.id, version: responseReview.version }))
 })
